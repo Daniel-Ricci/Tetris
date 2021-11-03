@@ -114,7 +114,11 @@ namespace Tetrominoes
         {
             foreach (Transform child in transform)
             {
-                if (!child.gameObject.CompareTag("Pivot"))
+                if (child.gameObject.CompareTag("Pivot"))
+                {
+                    Destroy(child.gameObject);
+                }
+                else
                 {
                     var pos = child.transform.position;
                     var roundedX = Mathf.RoundToInt(pos.x);
@@ -241,7 +245,8 @@ namespace Tetrominoes
                 elapsedTime += Time.deltaTime;
                 yield return null;
             }
-            Destroy(block.gameObject);
+            var tetramino = block.parent;
+            Destroy(tetramino.childCount == 1 ? tetramino.gameObject : block.gameObject);
         }
 
         private void LineDown(int lineDestroyed)
