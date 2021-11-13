@@ -2,6 +2,7 @@
 using System.Collections;
 using Score;
 using TreeEditor;
+using UnityEditor.PackageManager;
 using UnityEngine;
 
 namespace Tetrominoes
@@ -22,14 +23,17 @@ namespace Tetrominoes
         private TetraminoSpawner _spawner;
         private ScoreController _scoreController;
         private GameObject _ghost;
+        private Quaternion _defaultRotation;
 
         private static float _fallTime = 0.5f;
         private static bool _gameOver;
+        private static bool _canHold = true;
 
         private void Start()
         {
             _spawner = FindObjectOfType<TetraminoSpawner>();
             _scoreController = FindObjectOfType<ScoreController>();
+            _defaultRotation = transform.rotation;
         }
 
         private void Update()
@@ -97,12 +101,22 @@ namespace Tetrominoes
                         transform.RotateAround(pivot.position, Vector3.forward, 90f);
                     }
                 }
+                else if (Input.GetKeyDown(KeyCode.LeftShift))
+                {
+                    if (_canHold)
+                    {
+                        transform.rotation = _defaultRotation;
+                        _spawner.HoldTetramino(this);
+                        _canHold = false;
+                    }
+                }
             }
         }
 
         private void OnTetraminoLanded()
         {
             transform.position -= Vector3.down;
+            _canHold = true;
             AddToGrid();
             StartCoroutine(CheckLines());
             _spawner.SpawnNextTetramino();
@@ -268,6 +282,11 @@ namespace Tetrominoes
         public void InstantiateGhost()
         {
             _ghost = Instantiate(ghostPrefab, transform.position, Quaternion.identity);
+        }
+
+        public void DestroyGhost()
+        {
+            Destroy(_ghost.gameObject);
         }
 
         private void UpdateGhost()

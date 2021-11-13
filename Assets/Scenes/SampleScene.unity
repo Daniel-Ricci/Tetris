@@ -2385,6 +2385,7 @@ MonoBehaviour:
   - {fileID: 5910908250596529990, guid: 460855b1b69a0b1489f0381941db2f05, type: 3}
   - {fileID: 3302206425549137344, guid: a9513b62c6ca1904ca6d8209ff131801, type: 3}
   nextTetraminoSpawnPoint: {fileID: 2129226672}
+  heldTetraminoSpawnPoint: {fileID: 868883063}
 --- !u!1 &1743776053
 GameObject:
   m_ObjectHideFlags: 0
