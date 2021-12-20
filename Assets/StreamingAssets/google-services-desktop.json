@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "678112500393",
+    "project_id": "tetris-6cf7a",
+    "firebase_url": "https://tetris-6cf7a-default-rtdb.firebaseio.com/",
+    "storage_bucket": "tetris-6cf7a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:678112500393:android:22ed3d96d6c31b8b70e7b8",
+        "android_client_info": {
+          "package_name": "com.DefaultCompany.Tetris"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "678112500393-8jkqhsg1oiele2jl00aeii3g17lfu977.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdZyhJLbucfmCWaG4X0cQE-mvMQbBscgc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "678112500393-8jkqhsg1oiele2jl00aeii3g17lfu977.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

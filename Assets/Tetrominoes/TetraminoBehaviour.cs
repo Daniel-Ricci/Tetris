@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections;
 using Score;
-using TreeEditor;
-using UnityEditor.PackageManager;
 using UnityEngine;
 
 namespace Tetrominoes
@@ -22,6 +20,7 @@ namespace Tetrominoes
 
         private TetraminoSpawner _spawner;
         private ScoreController _scoreController;
+        private HighscoreManager _highscoreManager;
         private GameObject _ghost;
         private Quaternion _defaultRotation;
 
@@ -33,6 +32,7 @@ namespace Tetrominoes
         {
             _spawner = FindObjectOfType<TetraminoSpawner>();
             _scoreController = FindObjectOfType<ScoreController>();
+            _highscoreManager = FindObjectOfType<HighscoreManager>();
             _defaultRotation = transform.rotation;
         }
 
@@ -143,10 +143,7 @@ namespace Tetrominoes
                         GameOver();
                         break;
                     }
-                    else
-                    {
-                        Grid[roundedX, roundedY] = child;
-                    }
+                    Grid[roundedX, roundedY] = child;
                 }
             }
         }
@@ -291,8 +288,9 @@ namespace Tetrominoes
 
         private void UpdateGhost()
         {
-            _ghost.transform.position = transform.position;
-            _ghost.transform.rotation = transform.rotation;
+            var t = transform;
+            _ghost.transform.position = t.position;
+            _ghost.transform.rotation = t.rotation;
             while (ValidMove(_ghost.transform))
             {
                 _ghost.transform.position += Vector3.down;
@@ -329,6 +327,10 @@ namespace Tetrominoes
         {
             Destroy(_spawner.gameObject);
             _gameOver = true;
+            if (_scoreController.GetCurrentScore() > _highscoreManager.GetCurrentHighscore())
+            {
+                _highscoreManager.UpdateHighscore(_scoreController.GetCurrentScore());
+            }
         }
     }
 }
