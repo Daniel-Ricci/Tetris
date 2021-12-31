@@ -1,17 +1,19 @@
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 using Firebase;
 using Firebase.Database;
 using Firebase.Extensions;
-using TMPro;
+using UnityEngine.UI;
 
 public class HighscoreManager : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI highscoreText;
+    [SerializeField] private Text highscoreText;
+    [SerializeField] private string username;
 
     private DatabaseReference _dbReference;
     private bool _dbStatus;
-    private int _currentHighscore;
+    private long _currentHighscore;
 
     // Start is called before the first frame update
     private void Start()
@@ -37,14 +39,14 @@ public class HighscoreManager : MonoBehaviour
         }
     }
 
-    public int GetCurrentHighscore()
+    public long GetCurrentHighscore()
     {
         return _currentHighscore;
     }
 
     private IEnumerator UpdateHighscoreInDB(int score)
     {
-        var dbTask = _dbReference.Child("Highscore").SetValueAsync(score);
+        var dbTask = _dbReference.Child("Highscore").Child(username).SetValueAsync(score);
 
         yield return new WaitUntil(() => dbTask.IsCompleted);
 
@@ -61,7 +63,7 @@ public class HighscoreManager : MonoBehaviour
 
     private IEnumerator GetHighscoreFromDB()
     {
-        var dbTask = _dbReference.Child("Highscore").GetValueAsync();
+        var dbTask = _dbReference.Child("Highscore").OrderByValue().LimitToLast(1).GetValueAsync();
 
         yield return new WaitUntil(() => dbTask.IsCompleted);
 
@@ -71,7 +73,7 @@ public class HighscoreManager : MonoBehaviour
         }
         else
         {
-            _currentHighscore = int.Parse(dbTask.Result.Value.ToString());
+            _currentHighscore = long.Parse(dbTask.Result.Children.First().Value.ToString());
             UpdateHighscoreUI();
         }
     }
